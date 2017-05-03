@@ -12,10 +12,15 @@ Data: Daily
 # index 3: day, index 8: mean temp
 dataTemp = pd.read_csv("datasets\\climate_march_SG.csv",
                        header=0, usecols=[3, 8])
+
+dataTempRoom = pd.read_csv("datasets\\Temperature (15-31 Mar)- Meeting Room 1 - Sensor 1.csv",
+                       parse_dates=[0], header=0, usecols=[0, 1])
 # select days 15 - 31
 dataTemp = dataTemp[14:31]
 
+# print dataTemp.corr()
 # print dataTemp
+# print dataTemp.describe()
 
 def lineGraphTemp():
     plt.plot(dataTemp['Day'], dataTemp['Mean Temperature'], linestyle='-', color='b')
@@ -44,4 +49,4 @@ def plotGraph():
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots"
     print 'Graph saved in ' + dirPath
 
-plotGraph()
+# plotGraph()

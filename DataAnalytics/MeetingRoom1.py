@@ -10,17 +10,38 @@ import os
 "parse_dates=[0]" converts the Strings under the first column into datetime64 objects
 '''
 
-dataTemp = pd.read_csv("datasets\\Temperature (15-31 Mar)- Meeting Room 1 - Sensor 1.csv",
+# input files
+inputFileTemp = "datasets\\Temperature (15-31 Mar)- Meeting Room 1 - Sensor 1.csv"
+inputFileHumidity = "datasets\\Humidity (15-31 Mar)- Meeting Room 1 - Sensor 1.csv"
+
+# create DataFrame objects
+dataTemp = pd.read_csv(inputFileTemp,
                        parse_dates=[0], header=0, usecols=[0, 1])
-dataHumidity = pd.read_csv("datasets\\Humidity (15-31 Mar)- Meeting Room 1 - Sensor 1.csv",
+dataHumidity = pd.read_csv(inputFileHumidity,
                            parse_dates=[0], header=0, usecols=[0, 1])
 
 
+# Convert index from RangeIndex to DatetimeIndex (so that we can set time frame)
+dataTemp['Date & Time'] = pd.DatetimeIndex(dataTemp['Date & Time'])
+#TODO: find out what happened to the 'Date & Time' key
+print dataTemp.keys()
+dataTemp.set_index(keys='Date & Time', inplace=True)
+print dataTemp.keys()
+# print '\nIndex:', type(dataTemp.index)
+
+#TODO: Fix time frame
+# Set time frame from 9am to 6pm
+dataTemp = dataTemp.between_time('9:00', '18:00')
+# dataTemp['Date & Time'] = pd.RangeIndex(dataTemp['Date & Time'])
+# print '\nIndex:', type(dataTemp.index)
+
+
+
 # -=-=-=-=-= PRINTING OF DATA -=-=-=-=-=
-# print data
-# print data['Date & Time']
-# print data['Value']
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# print dataTemp['Date & Time']
+# print dataTemp['Value']
+# print dataTemp
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
 # -=-=-=-=-= TEMPERATURE -=-=-=-=-=
@@ -134,8 +155,7 @@ def plotGraph():
     print '\nGraphs saved in ' + dirPath
 
 # -=-= Run the functions to obtain plots -=-=
-plotGraph()
-
+# plotGraph()
 
 # From python shell, type:
 # execfile("MeetingRoom1.py")
