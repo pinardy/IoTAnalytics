@@ -1,16 +1,17 @@
 import sys
 
-# Checking for libraries
+# -=-= Checking for libraries -=-=
+
 # print 'numpy' in sys.modules
 # print 'scipy' in sys.modules
 # print 'matplotlib' in sys.modules
 # print 'pandas' in sys.modules
 # print 'sklearn' in sys.modules
 
-# Check the versions of libraries
+# -=-= Check the versions of libraries -=-=
 
 # Python version
-print('Python: {}'.format(sys.version))
+print ('\n' + 'Python: {}'.format(sys.version) + '\n')
 
 # scipy
 import scipy
