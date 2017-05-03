@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 
 # Meeting room 1, sensor 1
 
@@ -17,8 +18,22 @@ data = pd.read_csv("datasets\\Temperature- Meeting Room 1 - Sensor 1.csv",
 # print data['Value']
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-plt.plot(data['Date & Time'], data['Value'], '*')
-plt.xticks(rotation='vertical')
+
+def plotGraph():
+    plt.plot(data['Date & Time'], data['Value'], '*')
+    plt.xticks(rotation='vertical')
+
+    # Labeling the graphs
+    title = "Date against Temperature"
+    plt.title(title)
+    plt.xlabel('Date & Time')
+    plt.ylabel('Temperature')
+
+    # Save graph to a file called "graph.png"
+    dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\graph"
+    plt.savefig(dirPath + ".png")
+
+plotGraph()
 
 # From python shell, type:
 # execfile("MeetingRoom1.py")
