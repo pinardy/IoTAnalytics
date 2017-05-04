@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-# -=-=-= Meeting room 1, sensor 1 -=-=-=
+# -=-=-= Extract data out from CSV file (either 24 hours or working hours) -=-=-=
 
 '''
 ----- DataFrame objects -----
@@ -11,40 +11,42 @@ import os
 '''
 
 # input files
-inputFileTemp = "datasets\\Temperature (24-28 Apr)- Meeting Room 1 - Sensor 1.csv"
-inputFileHumidity = "datasets\\Humidity (24-28 Apr)- Meeting Room 1 - Sensor 1.csv"
+inputFileTemp = "datasets\\mtgrm1_s1\\Temperature (24-28 Apr)- Meeting Room 1 - Sensor 1.csv"
+inputFileHumidity = "datasets\\mtgrm1_s2\\Humidity (24-28 Apr)- Meeting Room 1 - Sensor 2.csv"
+inputFileMotion = "datasets\\mtgrm1_s1\\Motion (24-28 Apr)- Meeting Room 1 - Motion Sensor 1.csv"
 
 # create DataFrame objects
 dataTemp = pd.read_csv(inputFileTemp,
                        parse_dates=[0], header=0, usecols=[0, 1])
 dataHumidity = pd.read_csv(inputFileHumidity,
                            parse_dates=[0], header=0, usecols=[0, 1])
+dataMotion = pd.read_csv(inputFileMotion,
+                           parse_dates=[0], header=0, usecols=[0, 1])
 
-# Converts date/time data to datetime64 object
+## Converts date/time data to datetime64 object
 dataTemp['Date & Time'] = pd.to_datetime(dataTemp['Date & Time'])
-
-#TODO: find out what happened to the 'Date & Time' key
-# dataTemp = dataTemp.set_index(keys='Date & Time', inplace=False, append=True, drop=True)
+dataHumidity['Date & Time'] = pd.to_datetime(dataHumidity['Date & Time'])
+dataMotion['Date & Time'] = pd.to_datetime(dataMotion['Date & Time'])
 
 dataTemp = dataTemp.set_index('Date & Time')
-# print dataTemp.keys()
-# print '\nIndex:', type(dataTemp.index)
+dataHumidity = dataHumidity.set_index('Date & Time')
+dataMotion = dataMotion.set_index('Date & Time')
 
-# Set time frame from 9am to 6pm
+## Set time frame from 9am to 6pm
 dataTemp = dataTemp.between_time('9:00', '18:00')
+dataHumidity = dataHumidity.between_time('9:00', '18:00')
+dataMotion = dataMotion.between_time('9:00', '18:00')
 
-# Reset index so that we can plot the graph later
+## Reset index so that we can plot the graph later
 dataTemp.reset_index(inplace = True)
-# print '\nIndex:', type(dataTemp.index)
-
-# print dataTemp.keys()
-
+dataHumidity.reset_index(inplace = True)
+dataMotion.reset_index(inplace = True)
 
 
 # -=-=-=-=-= PRINTING OF DATA -=-=-=-=-=
 # print dataTemp['Date & Time']
 # print dataTemp['Value']
-print dataTemp
+print dataMotion
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
@@ -61,7 +63,7 @@ def lineGraphTemp():
     plt.ylabel('Temperature')
 
     # displays graph
-    plt.show()
+    # plt.show()
 
     # Save graph to a file called "graph.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
@@ -87,7 +89,7 @@ def boxPlotTemp():
     plt.ylabel('Temperature')
 
     # displays graph
-    plt.show()
+    # plt.show()
 
     # Save graph to a file called "boxplot.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
@@ -113,7 +115,7 @@ def lineGraphHumidity():
     plt.ylabel('Humidity')
 
     # displays graph
-    plt.show()
+    # plt.show()
 
     # Save graph to a file called "graph.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Humidity"
@@ -139,7 +141,7 @@ def boxPlotHumidity():
     plt.ylabel('Humidity')
 
     # displays graph
-    plt.show()
+    # plt.show()
 
     # Save graph to a file called "boxplot.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Humidity"
@@ -151,27 +153,52 @@ def boxPlotHumidity():
 
     plt.savefig(dirPathFile + ".png")
 
+# -=-=-=-=-= MOTION -=-=-=-=-=
 
+def motionGraph():
+    plt.plot(dataMotion['Date & Time'], dataMotion['Value'], linestyle='-', color='b')
+    plt.xticks(rotation='vertical')
+
+    # Labeling the graphs
+    title = "Motion against Date"
+    plt.title(title)
+    plt.xlabel('Date')
+    plt.ylabel('Motion')
+
+    # displays graph
+    # plt.show()
+
+    # Save graph to a file called "graph.png"
+    dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Motion"
+    dirPathFile = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Motion\\motiongraph"
+
+    # initialize directory if it doesn't exist
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)
+
+    plt.savefig(dirPathFile + ".png")
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 def plotGraph():
     # Humidity against date
-    # print 'Plotting humidity graphs...'
-    # lineGraphHumidity()  # line graph
-    # boxPlotHumidity()  # box plot
-
-    #TODO: bug: linegraph gets a boxplot instead (plot temp & humidity separately first)
+    print 'Plotting humidity graphs...'
+    lineGraphHumidity()  # line graph
+    boxPlotHumidity()  # box plot
 
     # Temperature against date
-    print '\nPlotting temperature graphs...'
-    lineGraphTemp()  # line graph
-    boxPlotTemp()  # box plot
+    # print '\nPlotting temperature graphs...'
+    # lineGraphTemp()  # line graph
+    # boxPlotTemp()  # box plot
+
+    # Motion against date
+    # print '\nPlotting motion graphs...'
+    # motionGraph()  # line graph
 
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots"
     print 'Graphs saved in ' + dirPath
 
 # -=-= Run the functions to obtain plots -=-=
-plotGraph()
+# plotGraph()
 
 # From python shell, type:
-# execfile("MeetingRoom1.py")
+# execfile("ExtractData.py")
