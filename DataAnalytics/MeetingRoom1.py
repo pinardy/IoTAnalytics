@@ -11,8 +11,8 @@ import os
 '''
 
 # input files
-inputFileTemp = "datasets\\Temperature (15-31 Mar)- Meeting Room 1 - Sensor 1.csv"
-inputFileHumidity = "datasets\\Humidity (15-31 Mar)- Meeting Room 1 - Sensor 1.csv"
+inputFileTemp = "datasets\\Temperature (24-28 Apr)- Meeting Room 1 - Sensor 1.csv"
+inputFileHumidity = "datasets\\Humidity (24-28 Apr)- Meeting Room 1 - Sensor 1.csv"
 
 # create DataFrame objects
 dataTemp = pd.read_csv(inputFileTemp,
@@ -20,27 +20,31 @@ dataTemp = pd.read_csv(inputFileTemp,
 dataHumidity = pd.read_csv(inputFileHumidity,
                            parse_dates=[0], header=0, usecols=[0, 1])
 
+# Converts date/time data to datetime64 object
+dataTemp['Date & Time'] = pd.to_datetime(dataTemp['Date & Time'])
 
-# Convert index from RangeIndex to DatetimeIndex (so that we can set time frame)
-dataTemp['Date & Time'] = pd.DatetimeIndex(dataTemp['Date & Time'])
 #TODO: find out what happened to the 'Date & Time' key
-print dataTemp.keys()
-dataTemp.set_index(keys='Date & Time', inplace=True)
-print dataTemp.keys()
+# dataTemp = dataTemp.set_index(keys='Date & Time', inplace=False, append=True, drop=True)
+
+dataTemp = dataTemp.set_index('Date & Time')
+# print dataTemp.keys()
 # print '\nIndex:', type(dataTemp.index)
 
-#TODO: Fix time frame
 # Set time frame from 9am to 6pm
 dataTemp = dataTemp.between_time('9:00', '18:00')
-# dataTemp['Date & Time'] = pd.RangeIndex(dataTemp['Date & Time'])
+
+# Reset index so that we can plot the graph later
+dataTemp.reset_index(inplace = True)
 # print '\nIndex:', type(dataTemp.index)
+
+# print dataTemp.keys()
 
 
 
 # -=-=-=-=-= PRINTING OF DATA -=-=-=-=-=
 # print dataTemp['Date & Time']
 # print dataTemp['Value']
-# print dataTemp
+print dataTemp
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
@@ -55,6 +59,9 @@ def lineGraphTemp():
     plt.title(title)
     plt.xlabel('Date')
     plt.ylabel('Temperature')
+
+    # displays graph
+    plt.show()
 
     # Save graph to a file called "graph.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
@@ -79,6 +86,9 @@ def boxPlotTemp():
     plt.xlabel('')
     plt.ylabel('Temperature')
 
+    # displays graph
+    plt.show()
+
     # Save graph to a file called "boxplot.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
     dirPathFile = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature\\boxplot"
@@ -101,6 +111,9 @@ def lineGraphHumidity():
     plt.title(title)
     plt.xlabel('Date')
     plt.ylabel('Humidity')
+
+    # displays graph
+    plt.show()
 
     # Save graph to a file called "graph.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Humidity"
@@ -125,6 +138,9 @@ def boxPlotHumidity():
     plt.xlabel('')
     plt.ylabel('Humidity')
 
+    # displays graph
+    plt.show()
+
     # Save graph to a file called "boxplot.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Humidity"
     dirPathFile = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Humidity\\boxplot"
@@ -144,18 +160,18 @@ def plotGraph():
     # lineGraphHumidity()  # line graph
     # boxPlotHumidity()  # box plot
 
-    #TODO: bug: linegraph gets a boxplot instead
+    #TODO: bug: linegraph gets a boxplot instead (plot temp & humidity separately first)
 
     # Temperature against date
-    print 'Plotting temperature graphs...'
+    print '\nPlotting temperature graphs...'
     lineGraphTemp()  # line graph
     boxPlotTemp()  # box plot
 
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots"
-    print '\nGraphs saved in ' + dirPath
+    print 'Graphs saved in ' + dirPath
 
 # -=-= Run the functions to obtain plots -=-=
-# plotGraph()
+plotGraph()
 
 # From python shell, type:
 # execfile("MeetingRoom1.py")
