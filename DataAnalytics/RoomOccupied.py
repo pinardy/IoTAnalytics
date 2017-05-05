@@ -103,8 +103,7 @@ def tempGraph():
     plt.xticks(rotation='vertical')
 
     # Labeling the graphs
-    title = "Temperature against Date (Activity only)"
-    plt.title(title)
+    plt.title("Temperature against Date (Activity only)")
     plt.xlabel('Date')
     plt.ylabel('Temperature ($^\circ$C)')
 

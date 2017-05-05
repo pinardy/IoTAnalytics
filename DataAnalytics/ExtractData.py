@@ -43,10 +43,11 @@ dataHumidity.reset_index(inplace = True)
 dataMotion.reset_index(inplace = True)
 
 
+
 # -=-=-=-=-= PRINTING OF DATA -=-=-=-=-=
 # print dataTemp['Date & Time']
-# print dataTemp['Value']
-print dataMotion
+print dataTemp['Value']
+# print dataMotion
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
@@ -57,12 +58,12 @@ def lineGraphTemp():
     plt.xticks(rotation='vertical')
 
     # Labeling the graphs
-    title = "Temperature against Date"
-    plt.title(title)
+    plt.title("Temperature against Date")
     plt.xlabel('Date')
     plt.ylabel('Temperature ($^\circ$C)')
 
     # displays graph
+    dataTemp.seasonal_decompose('Value').plot()
     plt.show()
 
     # Save graph to a file called "graph.png"
@@ -86,7 +87,7 @@ def boxPlotTemp():
     title = "Boxplot of temperature in a week"
     plt.title(title)
     plt.xlabel('')
-    plt.ylabel('Temperature')
+    plt.ylabel('Temperature ($^\circ$C)')
 
     # displays graph
     # plt.show()
