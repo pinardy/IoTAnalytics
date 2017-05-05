@@ -60,10 +60,10 @@ def lineGraphTemp():
     title = "Temperature against Date"
     plt.title(title)
     plt.xlabel('Date')
-    plt.ylabel('Temperature')
+    plt.ylabel('Temperature ($^\circ$C)')
 
     # displays graph
-    # plt.show()
+    plt.show()
 
     # Save graph to a file called "graph.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
@@ -181,14 +181,14 @@ def motionGraph():
 
 def plotGraph():
     # Humidity against date
-    print 'Plotting humidity graphs...'
-    lineGraphHumidity()  # line graph
-    boxPlotHumidity()  # box plot
+    # print 'Plotting humidity graphs...'
+    # lineGraphHumidity()  # line graph
+    # boxPlotHumidity()  # box plot
 
     # Temperature against date
-    # print '\nPlotting temperature graphs...'
-    # lineGraphTemp()  # line graph
-    # boxPlotTemp()  # box plot
+    print '\nPlotting temperature graphs...'
+    lineGraphTemp()  # line graph
+    boxPlotTemp()  # box plot
 
     # Motion against date
     # print '\nPlotting motion graphs...'
@@ -198,7 +198,7 @@ def plotGraph():
     print 'Graphs saved in ' + dirPath
 
 # -=-= Run the functions to obtain plots -=-=
-# plotGraph()
+plotGraph()
 
 # From python shell, type:
 # execfile("ExtractData.py")

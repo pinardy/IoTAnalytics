@@ -39,8 +39,36 @@ dataTemp.reset_index(inplace = True)
 dataMotion = dataMotion.loc[dataMotion['Value'] == 1]
 
 # print (dataMotion['Date & Time'].eq(dataTemp['Date & Time'], axis=0))
-print dataMotion
-print dataTemp
+# print dataMotion['Date & Time'].describe()
+# print dataTemp['Date & Time'].describe()
+
+''' Iterate over every element in column and get difference.
+  If difference in time is small enough (5 mins), we take that row of data
+  PURPOSE: obtain index of rows where the times of the 2 data being compared are close enough
+'''
+indexList = []
+def iterateData(data1, data2):
+    indexTemp = 0
+    indexMotion = 0
+    timeBoundary = pd.Timedelta('0 days 00:05:00') # for checking if the data is within 15 mins of each other
+    timeFloor = pd.Timedelta('0 days 00:00:00') # we want the difference to be positive
+
+    for timeStamp in data1['Date & Time']:
+        indexTemp += 1
+        for timeStamp2 in data2['Date & Time']:
+            indexMotion += 1
+            if (timeFloor < (timeStamp - timeStamp2) and (timeStamp - timeStamp2) < timeBoundary):
+                # add index to a list
+                indexList.append(indexTemp)
+
+
+# print dataTemp['Date & Time'].size  # 465
+# print dataMotion['Date & Time'].size  # 34
+
+iterateData(dataTemp, dataMotion)
+filteredData = dataTemp.ix[indexList] # match indexList to dataTemp
+# print indexList
+print filteredData
 
 # -=-=-=-=-= MOTION -=-=-=-=-=
 
@@ -68,15 +96,45 @@ def motionGraph():
     plt.savefig(dirPathFile + ".png")
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
+# -=-=-=-=-= TEMPERATURE -=-=-=-=-=
+
+def tempGraph():
+    plt.plot(filteredData['Date & Time'], filteredData['Value'], linestyle='-', color='b')
+    plt.xticks(rotation='vertical')
+
+    # Labeling the graphs
+    title = "Temperature against Date (Activity only)"
+    plt.title(title)
+    plt.xlabel('Date')
+    plt.ylabel('Temperature ($^\circ$C)')
+
+    # displays graph
+    # plt.show()
+
+    # Save graph to a file called "graph.png"
+    dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
+    dirPathFile = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature\\linegraph"
+
+    # initialize directory if it doesn't exist
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)
+
+    plt.savefig(dirPathFile + ".png")
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 def plotGraph():
     # Motion against date
-    print '\nPlotting motion graphs...'
-    motionGraph()  # line graph
+    # print '\nPlotting motion graphs...'
+    # motionGraph()  # line graph
+
+    # Temperature against date (Activity only)
+    print '\nPlotting temperature graphs...'
+    tempGraph()  # line graph
 
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots"
     print 'Graphs saved in ' + dirPath
 
 
 
-# -=-= Run the functions to obtain plots -=-=
-# plotGraph()
+# -=-= Run the function to obtain plots -=-=
+plotGraph()
