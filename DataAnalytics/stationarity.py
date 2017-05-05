@@ -57,7 +57,7 @@ def test_stationarity(timeseries):
 
     # Display graph
     print '\nPerforming stationarity test...'
-    plt.show()
+    # plt.show()
 
     # Save graph to a file called "stationaryTest.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"

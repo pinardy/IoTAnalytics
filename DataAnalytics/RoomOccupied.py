@@ -119,6 +119,32 @@ def tempGraph():
         os.makedirs(dirPath)
 
     plt.savefig(dirPathFile + ".png")
+
+def boxPlotTemp():
+    filteredData.plot.box()
+    color = dict(boxes='DarkGreen', whiskers='DarkOrange',
+                 medians='DarkBlue', caps='Gray')
+    filteredData.plot.box(color=color, sym='r+')
+
+    # Labeling the graphs
+    title = "Boxplot of temperature in a week"
+    plt.title(title)
+    plt.xlabel('')
+    plt.ylabel('Temperature ($^\circ$C)')
+
+    # displays graph
+    # plt.show()
+
+    # Save graph to a file called "boxplot.png"
+    dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
+    dirPathFile = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature\\boxplot_activity"
+
+    # initialize directory if it doesn't exist
+    if not os.path.exists(dirPath):
+        os.makedirs(dirPath)
+
+    plt.savefig(dirPathFile + ".png")
+
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 def plotGraph():
@@ -129,6 +155,7 @@ def plotGraph():
     # Temperature against date (Activity only)
     print '\nPlotting temperature graphs...'
     tempGraph()  # line graph
+    boxPlotTemp() # box plot
 
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots"
     print 'Graphs saved in ' + dirPath
