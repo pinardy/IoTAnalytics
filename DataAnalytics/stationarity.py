@@ -12,7 +12,7 @@ For stationary data, we can apply regression techniques to the time dependent va
 
 
 # input files
-inputFileTemp = "datasets\\mtgrm1_s1\\Temperature (24-28 Apr)- Meeting Room 1 - Sensor 1.csv"
+inputFileTemp = "datasets\\mtgrm1_AC\\Temperature (24-28 Apr)- Meeting Room 1 - AC Controller.csv"
 
 # create DataFrame objects
 dataTemp = pd.read_csv(inputFileTemp,
@@ -28,6 +28,11 @@ dataTemp = dataTemp.between_time('9:00', '18:00')
 ## Reset index so that we can plot the graph later
 dataTemp.reset_index(inplace = True)
 
+
+# -=-=-=-=-= Stationarity test -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# -- Function: test_stationarity
+# -- Purpose:  Perform stationarity test & Dickey-Fuller test
+# -------------------------------------------------------------------
 
 def test_stationarity(timeseries):
     # Determine rolling statistics

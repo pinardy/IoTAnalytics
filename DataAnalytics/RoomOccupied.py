@@ -12,7 +12,7 @@ import os
 
 # input file
 inputFileMotion = "datasets\\mtgrm1_s1\\Motion (24-28 Apr)- Meeting Room 1 - Motion Sensor 1.csv"
-inputFileTemp = "datasets\\mtgrm1_s1\\Temperature (24-28 Apr)- Meeting Room 1 - Sensor 1.csv"
+inputFileTemp = "datasets\\mtgrm1_AC\\Temperature (24-28 Apr)- Meeting Room 1 - AC Controller.csv"
 
 # create DataFrame objects
 dataMotion = pd.read_csv(inputFileMotion,
@@ -38,9 +38,13 @@ dataTemp.reset_index(inplace = True)
 # Only extract data for which there is motion
 dataMotion = dataMotion.loc[dataMotion['Value'] == 1]
 
+# -=-=-=-=-= PRINTING OF DATA -=-=-=-=-=
 # print (dataMotion['Date & Time'].eq(dataTemp['Date & Time'], axis=0))
 # print dataMotion['Date & Time'].describe()
 # print dataTemp['Date & Time'].describe()
+# print dataMotion
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 
 ''' Iterate over every element in column and get difference.
   If difference in time is small enough (5 mins), we take that row of data
@@ -94,7 +98,7 @@ def motionGraph():
         os.makedirs(dirPath)
 
     plt.savefig(dirPathFile + ".png")
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 
 # -=-=-=-=-= TEMPERATURE -=-=-=-=-=
 

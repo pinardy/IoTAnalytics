@@ -11,7 +11,7 @@ import os
 '''
 
 # input files
-inputFileTemp = "datasets\\mtgrm1_s1\\Temperature (24-28 Apr)- Meeting Room 1 - Sensor 1.csv"
+inputFileTemp = "datasets\\mtgrm1_AC\\Temperature (24-28 Apr)- Meeting Room 1 - AC Controller.csv"
 inputFileHumidity = "datasets\\mtgrm1_s2\\Humidity (24-28 Apr)- Meeting Room 1 - Sensor 2.csv"
 inputFileMotion = "datasets\\mtgrm1_s1\\Motion (24-28 Apr)- Meeting Room 1 - Motion Sensor 1.csv"
 
@@ -32,10 +32,12 @@ dataTemp = dataTemp.set_index('Date & Time')
 dataHumidity = dataHumidity.set_index('Date & Time')
 dataMotion = dataMotion.set_index('Date & Time')
 
+
 ## Set time frame from 9am to 6pm
-# dataTemp = dataTemp.between_time('9:00', '18:00')
+dataTemp = dataTemp.between_time('9:00', '18:00')
 dataHumidity = dataHumidity.between_time('9:00', '18:00')
 dataMotion = dataMotion.between_time('9:00', '18:00')
+
 
 ## Reset index so that we can plot the graph later
 dataTemp.reset_index(inplace = True)
@@ -50,16 +52,21 @@ dataMotion.reset_index(inplace = True)
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
-# -=-=-=-=-= TEMPERATURE -=-=-=-=-=
+# -=-=-=-=-= TEMPERATURE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# -- Function: lineGraphTemp
+# -- Purpose:  Plot a line graph of temperature against datetime
+# -------------------------------------------------------------------
 
 def lineGraphTemp():
-    plt.plot(dataTemp['Date & Time'], dataTemp['Value'], linestyle='-', color='b')
+    plt.plot(dataTemp['Date & Time'], dataTemp['Value'],
+             linestyle='-', color='b', label='Temperature') # marker='.'
     plt.xticks(rotation='vertical')
 
     # Labeling the graphs
     plt.title("Temperature against Date")
     plt.xlabel('Date')
     plt.ylabel('Temperature ($^\circ$C)')
+    plt.legend()
 
     # Now add the legend with some customizations.
     # plt.legend(loc='upper center', shadow=True)
@@ -70,7 +77,7 @@ def lineGraphTemp():
     # displays graph
     # plt.show()
 
-    # Save graph to a file called "graph.png"
+    # Create paths for file called "linegraph.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
     dirPathFile = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature\\linegraph"
 
@@ -78,8 +85,14 @@ def lineGraphTemp():
     if not os.path.exists(dirPath):
         os.makedirs(dirPath)
 
+    # Save graph "linegraph.png"
     plt.savefig(dirPathFile + ".png")
 
+
+# -=-=-=-=-= TEMPERATURE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# -- Function: boxPlotTemp
+# -- Purpose:  Plot a boxplot of temperature against datetime
+# -------------------------------------------------------------------
 
 def boxPlotTemp():
     dataTemp.plot.box()
@@ -107,8 +120,10 @@ def boxPlotTemp():
     plt.savefig(dirPathFile + ".png")
 
 
-# -=-=-=-=-= HUMIDITY -=-=-=-=-=
-
+# -=-=-=-=-= HUMIDITY -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# -- Function: lineGraphHumidity
+# -- Purpose:  Plot a line graph of humidity against datetime
+# -------------------------------------------------------------------
 def lineGraphHumidity():
     plt.plot(dataHumidity['Date & Time'], dataHumidity['Value'], linestyle='-', color='b')
     plt.xticks(rotation='vertical')
@@ -132,6 +147,10 @@ def lineGraphHumidity():
 
     plt.savefig(dirPathFile + ".png")
 
+# -=-=-=-=-= HUMIDITY -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# -- Function: boxPlotHumidity
+# -- Purpose:  Plot a boxplot of humidity against datetime
+# -------------------------------------------------------------------
 
 def boxPlotHumidity():
     dataHumidity.plot.box()
@@ -158,7 +177,11 @@ def boxPlotHumidity():
 
     plt.savefig(dirPathFile + ".png")
 
-# -=-=-=-=-= MOTION -=-=-=-=-=
+
+# -=-=-=-=-= MOTION -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# -- Function: motionGraph
+# -- Purpose:  Plot a linegraph of motion (activity) against datetime
+# -------------------------------------------------------------------
 
 def motionGraph():
     plt.plot(dataMotion['Date & Time'], dataMotion['Value'], linestyle='-', color='b')
@@ -182,7 +205,12 @@ def motionGraph():
         os.makedirs(dirPath)
 
     plt.savefig(dirPathFile + ".png")
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# -- Function: plotGraph
+# -- Purpose:  Plot the wanted graphs (comment/uncomment as needed)
+# -------------------------------------------------------------------
 
 def plotGraph():
     # Humidity against date

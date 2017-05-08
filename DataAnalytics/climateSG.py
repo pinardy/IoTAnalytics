@@ -4,17 +4,15 @@ import os
 
 '''
 --- Climate of Singapore ---
-Period: March
+Period: March/April
 Station: Ang Mo Kio
 Data: Daily
 '''
 
 # index 3: day, index 8: mean temp
-dataTemp = pd.read_csv("datasets\\climate_march_SG.csv",
+dataTemp = pd.read_csv("datasets\\climate_april_SG.csv",
                        header=0, usecols=[3, 8])
 
-dataTempRoom = pd.read_csv("datasets\\Temperature (15-31 Mar)- Meeting Room 1 - Sensor 1.csv",
-                       parse_dates=[0], header=0, usecols=[0, 1])
 # select days 15 - 31
 dataTemp = dataTemp[14:31]
 
@@ -27,14 +25,14 @@ def lineGraphTemp():
     plt.xticks(rotation='vertical')
 
     # Labeling the graphs
-    title = "Mean temperature against Day (March)"
+    title = "Mean temperature against Day (April)"
     plt.title(title)
     plt.xlabel('Day')
-    plt.ylabel('Mean temperature')
+    plt.ylabel('Mean temperature ($^\circ$C)')
 
     # Save graph to a file called "graph.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
-    dirPathFile = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature\\sg_march_linegraph"
+    dirPathFile = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature\\sg_april_linegraph"
 
     # initialize directory if it doesn't exist
     if not os.path.exists(dirPath):
@@ -49,4 +47,4 @@ def plotGraph():
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots"
     print 'Graph saved in ' + dirPath
 
-# plotGraph()
+plotGraph()
