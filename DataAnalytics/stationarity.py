@@ -29,7 +29,6 @@ dataTemp = dataTemp.between_time('9:00', '18:00')
 dataTemp.reset_index(inplace = True)
 
 
-
 def test_stationarity(timeseries):
     # Determine rolling statistics
     rolmean = pd.rolling_mean(timeseries, window=12)

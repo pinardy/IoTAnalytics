@@ -33,7 +33,7 @@ dataHumidity = dataHumidity.set_index('Date & Time')
 dataMotion = dataMotion.set_index('Date & Time')
 
 ## Set time frame from 9am to 6pm
-dataTemp = dataTemp.between_time('9:00', '18:00')
+# dataTemp = dataTemp.between_time('9:00', '18:00')
 dataHumidity = dataHumidity.between_time('9:00', '18:00')
 dataMotion = dataMotion.between_time('9:00', '18:00')
 
@@ -43,11 +43,10 @@ dataHumidity.reset_index(inplace = True)
 dataMotion.reset_index(inplace = True)
 
 
-
 # -=-=-=-=-= PRINTING OF DATA -=-=-=-=-=
 # print dataTemp['Date & Time']
-print dataTemp['Value']
-# print dataMotion
+# print dataTemp['Value']
+# print dataTemp
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
@@ -62,9 +61,14 @@ def lineGraphTemp():
     plt.xlabel('Date')
     plt.ylabel('Temperature ($^\circ$C)')
 
+    # Now add the legend with some customizations.
+    # plt.legend(loc='upper center', shadow=True)
+
+    ## Widen the width of graph
+    # dataTemp.plot(figsize=(15, 4))
+
     # displays graph
-    dataTemp.seasonal_decompose('Value').plot()
-    plt.show()
+    # plt.show()
 
     # Save graph to a file called "graph.png"
     dirPath = os.path.dirname(os.path.realpath(__file__)) + "\\dataplots\\Temperature"
@@ -86,7 +90,7 @@ def boxPlotTemp():
     # Labeling the graphs
     title = "Boxplot of temperature in a week"
     plt.title(title)
-    plt.xlabel('')
+    plt.xticks([]) # hides the default 'Value' label on x-axis
     plt.ylabel('Temperature ($^\circ$C)')
 
     # displays graph
